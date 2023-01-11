@@ -3,24 +3,24 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <h1>{{ __('Subscribers List') }}</h1>
+            <h1>{{ __('Blogs List') }}</h1>
             <div class="col-md-12">
-                @include('admin.subscribers.search_results')
+                @include('admin.blogs.search_results')
             </div>
         </div>
     </div>
     <script>
         $(document).ready( function () {
             $(function () {
-                var table = $('#subscribers-table').DataTable({
+                var table = $('#blogs-table').DataTable({
                     processing: true,
                     serverSide: true,
-                    ajax: "{{ route('subscribers.index') }}",
+                    ajax: "{{ route('blogs.index') }}",
                     columns: [
-                        {data: 'name', name: 'name'},
-                        {data: 'username', name: 'username'},
-                        {data: 'password', name: 'password'},
+                        {data: 'title', name: 'title'},
+                        {data: 'publish_date', name: 'publish_date'},
                         {data: 'status', name: 'status'},
+                        {data: 'image', name: 'image'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                     ]
                 });
