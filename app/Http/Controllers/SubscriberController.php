@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\StoreSubscriber;
+use App\Http\Requests\UpdateSubscriber;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -64,4 +65,44 @@ class SubscriberController extends Controller
         }
     }
 
+    public function edit($subscriber)
+    {
+        $subscriber = User::find($subscriber);
+        return view('admin.subscribers.edit', compact('subscriber'));
+    }
+
+    public function update(Request $request, $subscriber)
+    {
+        $updateRequest = new UpdateSubscriber();
+        $validator = Validator::make($request->all(), $updateRequest->rules(), $updateRequest->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        try {
+
+            User::find($subscriber)->update([
+                'name' => $request["name"],
+                'username' => $request["username"],
+                'password' => Hash::make($request["password"]),
+                'status' => $request["status"],
+                'type' => 'subscriber',
+            ]);
+
+            return response()->json("Subscriber updated successfully", 200);
+
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
+    }
+
+    public function destroy($subscriber)
+    {
+        try {
+            User::find($subscriber)->delete();
+            return response()->json("Subscriber deleted successfully", 200);
+
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
+    }
 }
