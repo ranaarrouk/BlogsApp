@@ -20,7 +20,7 @@ class SubscriberController extends Controller
         if ($request->ajax()) {
             $subscribers = User::query()->where('type', 'subscriber')->select(['name', 'username', 'password', 'status']);
             return DataTables::of($subscribers)->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function ($row) {
                     $btn = '<a href="javascript:void(0)" class="btn btn-primary btn-sm">View</a>';
                     return $btn;
                 })
@@ -29,6 +29,16 @@ class SubscriberController extends Controller
         }
 
         return view('admin.subscribers.index');
+    }
+
+    public function create()
+    {
+        return view('admin.subscribers.create');
+    }
+
+    public function store(Request $request)
+    {
+        
     }
 
 }
