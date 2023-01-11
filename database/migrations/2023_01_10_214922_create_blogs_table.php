@@ -18,7 +18,7 @@ class CreateBlogsTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('image');
-            $table->string('status');
+            $table->string('status'); // "published",..
             $table->date('publish_date');
             $table->timestamps();
             $table->softDeletes();
