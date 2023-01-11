@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container" style="background-image: url('{{asset('images/background.jpg')}}'); height: 600px;border-radius: 1rem">
+    <div class="container" style="background-image: url('{{asset('images/background-2.jpg')}}'); height: 600px;border-radius: 0.3rem">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-lg-5">
                 <div class="alert alert-success" role="alert" id="successMsg" style="display: none">
-                    Added Successfully
                 </div>
                 <form id="SubmitForm">
                     @csrf
@@ -69,8 +68,8 @@
                         status: status,
                     },
                     success: function (response) {
+                        $('#successMsg').text(response);
                         $('#successMsg').show();
-                        console.log(response);
                     },
                     error: function (response) {
                         console.log(response);
