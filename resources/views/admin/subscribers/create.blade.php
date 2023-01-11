@@ -4,6 +4,7 @@
     <div class="container" style="background-image: url('{{asset('images/background-2.jpg')}}'); height: 600px;border-radius: 0.3rem">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-lg-5">
+                <h1> {{__('Create New Subscriber')}}</h1>
                 <div class="alert alert-success" role="alert" id="successMsg" style="display: none">
                 </div>
                 <form id="SubmitForm">

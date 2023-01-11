@@ -21,3 +21,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('subscribers', \App\Http\Controllers\SubscriberController::class);
+Route::resource('blogs', \App\Http\Controllers\BlogController::class);
