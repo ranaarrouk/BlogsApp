@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container" style="background-image: url('{{asset('images/background.jpg')}}'); height: 600px;border-radius: 1rem">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-6 mt-lg-5">
                 <div class="alert alert-success" role="alert" id="successMsg" style="display: none">
                     Added Successfully
                 </div>
-                <form>
+                <form id="SubmitForm">
                     @csrf
                     <div class="form-group col-md-12">
                         <label for="input-name">Name</label>
@@ -46,6 +46,13 @@
             $('#SubmitForm').on('submit', function (e) {
                 e.preventDefault();
 
+                // clear error messages
+                $('#nameErrorMsg').text("");
+                $('#usernameErrorMsg').text("");
+                $('#passwordErrorMsg').text("");
+                $('#statusErrorMsg').text("");
+
+                // get inputs values
                 let name = $('#input-name').val();
                 let username = $('#input-username').val();
                 let password = $('#input-password').val();
@@ -66,10 +73,11 @@
                         console.log(response);
                     },
                     error: function (response) {
-                        $('#nameErrorMsg').text(response.responseJSON.errors.name);
-                        $('#usernameErrorMsg').text(response.responseJSON.errors.username);
-                        $('#passwordErrorMsg').text(response.responseJSON.errors.password);
-                        $('#statusErrorMsg').text(response.responseJSON.errors.status);
+                        console.log(response);
+                        $('#nameErrorMsg').text(response.responseJSON.name);
+                        $('#usernameErrorMsg').text(response.responseJSON.username);
+                        $('#passwordErrorMsg').text(response.responseJSON.password);
+                        $('#statusErrorMsg').text(response.responseJSON.status);
                     },
                 });
             });

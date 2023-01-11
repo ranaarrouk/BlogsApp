@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\StoreSubscriber;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class SubscriberController extends Controller
 {
+
     public function __construct()
     {
-//        $this->middleware(['admin']);
+//        $this->middleware(['auth']);
     }
 
     public function index(Request $request)
@@ -38,7 +42,26 @@ class SubscriberController extends Controller
 
     public function store(Request $request)
     {
-        
+        $storeRequest = new StoreSubscriber();
+        $validator = Validator::make($request->all(), $storeRequest->rules(), $storeRequest->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        try {
+            $user = User::create([
+                'name' => $request["name"],
+                'username' => $request["username"],
+                'password' => Hash::make($request["password"]),
+                'status' => $request["status"],
+                'type' => 'subscriber',
+            ]);
+            $user->refresh();
+
+            return response()->json("Subscriber added successfully", 200);
+
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
     }
 
 }
