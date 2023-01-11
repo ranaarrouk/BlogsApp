@@ -14,7 +14,7 @@ class BlogController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('show');
     }
 
     public function index(Request $request)
@@ -115,6 +115,12 @@ class BlogController extends Controller
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage(), 500);
         }
+    }
+
+    public function show($blog)
+    {
+        $blog = Blog::findOrFail($blog);
+        return view('admin.blogs.show', compact('blog'));
     }
 
 }
