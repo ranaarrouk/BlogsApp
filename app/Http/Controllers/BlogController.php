@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBlog;
 use App\Http\Requests\UpdateBlog;
 use App\Models\Blog;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -24,14 +23,14 @@ class BlogController extends Controller
             $blogs = Blog::query()->select(['id', 'image', 'title', 'publish_date', 'status']);
             return DataTables::of($blogs)->addIndexColumn()
                 ->addColumn('image', function ($blog) {
-                    $url= asset('storage/blogs/images/'.$blog->image);
-                    return '<img src="'.$url.'" border="0" width="40" class="img-rounded" align="center" />';
+                    $url = asset('storage/blogs/images/' . $blog->image);
+                    return '<img src="' . $url . '" border="0" width="40" class="img-rounded" align="center" />';
                 })->addColumn('action', function ($blog) {
                     $route = url('blogs/' . $blog->id);
-                    $btn = '<a href="javascript:void(0)" class="m-1 btn btn-primary btn-sm">View</a><a href="javascript:void(0)" data-url="'. $route .'" class="btn-danger btn btn-sm delete-blog">Delete</a>';
+                    $btn = '<a href="javascript:void(0)" class="m-1 btn btn-primary btn-sm">View</a><a href="javascript:void(0)" data-url="' . $route . '" class="btn-danger btn btn-sm delete-blog">Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['image','action'])
+                ->rawColumns(['image', 'action'])
                 ->make(true);
         }
 
