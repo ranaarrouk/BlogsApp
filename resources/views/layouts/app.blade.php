@@ -76,7 +76,7 @@
                                 </form>
 
                                 @if(Auth::user()->type == "admin")
-                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <a class="dropdown-item" href="{{ route('admin.home') }}">
                                         {{ __('Control Panel') }}
                                     </a>
                                 @endif

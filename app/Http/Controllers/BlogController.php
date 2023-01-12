@@ -27,7 +27,9 @@ class BlogController extends Controller
                     return '<img src="' . $url . '" border="0" width="40" class="img-rounded" align="center" />';
                 })->addColumn('action', function ($blog) {
                     $route = url('blogs/' . $blog->id);
-                    $btn = '<a href="javascript:void(0)" class="m-1 btn btn-primary btn-sm">View</a><a href="javascript:void(0)" data-url="' . $route . '" class="btn-danger btn btn-sm delete-blog">Delete</a>';
+                    $btn = '<a href="'. route('blogs.show', $blog->id) .'" class="m-1 btn btn-primary btn-sm">View</a>';
+                    $btn .= '<a href="javascript:void(0)" data-url="' . $route . '" class="btn-secondary btn btn-sm edit-blog">Edit</a>';
+                    $btn .= '<a href="javascript:void(0)" data-url="' . $route . '" class="btn-danger btn btn-sm delete-blog">Delete</a>';
                     return $btn;
                 })
                 ->rawColumns(['image', 'action'])

@@ -20,5 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/admin/home', [App\Http\Controllers\AdminHomeController::class, 'index'])->name('admin.home');
 Route::resource('subscribers', \App\Http\Controllers\SubscriberController::class);
 Route::resource('blogs', \App\Http\Controllers\BlogController::class);
