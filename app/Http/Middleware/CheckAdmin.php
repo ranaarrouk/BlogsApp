@@ -17,10 +17,10 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->type == "admin")
+        if(Auth::user() && Auth::user()->type == "admin")
         {
             return $next($request);
         }
-        return $next($request);
+        abort(401);
     }
 }
