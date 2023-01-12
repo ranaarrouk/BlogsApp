@@ -21,13 +21,14 @@ class BlogController extends Controller
     {
 
         if ($request->ajax()) {
-            $blogs = Blog::query()->select(['image', 'title', 'publish_date', 'status']);
+            $blogs = Blog::query()->select(['id', 'image', 'title', 'publish_date', 'status']);
             return DataTables::of($blogs)->addIndexColumn()
                 ->addColumn('image', function ($blog) {
                     $url= asset('storage/blogs/images/'.$blog->image);
                     return '<img src="'.$url.'" border="0" width="40" class="img-rounded" align="center" />';
-                })->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" class="btn btn-primary btn-sm">View</a>';
+                })->addColumn('action', function ($blog) {
+                    $route = url('blogs/' . $blog->id);
+                    $btn = '<a href="javascript:void(0)" class="m-1 btn btn-primary btn-sm">View</a><a href="javascript:void(0)" data-url="'. $route .'" class="btn-danger btn btn-sm delete-blog">Delete</a>';
                     return $btn;
                 })
                 ->rawColumns(['image','action'])

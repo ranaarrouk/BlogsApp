@@ -10,7 +10,7 @@
         </div>
     </div>
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             $(function () {
                 var table = $('#blogs-table').DataTable({
                     processing: true,
@@ -22,9 +22,31 @@
                         {data: 'status', name: 'status'},
                         {data: 'image', name: 'image'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
-                    ]
+                    ],
+                    initComplete: function (settings, json) {
+                        $('.delete-blog').on('click', function (e) {
+                            e.preventDefault();
+                            let url = $(this).data("url");
+                            alert(url);
+                            $.ajax({
+                                method: "DELETE",
+                                url: url,
+                                data: {
+                                    "_token": "{{ csrf_token() }}",
+                                },
+                                success: function (response) {
+                                    alert("success");
+                                },
+                                error: function (response) {
+                                    alert("error");
+                                }
+                            });
+                        })
+                    }
                 });
+
             });
-        } );
+
+        });
     </script>
 @endsection
