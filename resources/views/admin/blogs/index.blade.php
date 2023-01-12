@@ -9,6 +9,7 @@
             </div>
         </div>
     </div>
+    @include('admin.message_modal')
     <script>
         $(document).ready(function () {
             $(function () {
@@ -27,7 +28,7 @@
                         $('.delete-blog').on('click', function (e) {
                             e.preventDefault();
                             let url = $(this).data("url");
-                            alert(url);
+                            $('#responseTitle').text("Delete Blog");
                             $.ajax({
                                 method: "DELETE",
                                 url: url,
@@ -35,10 +36,15 @@
                                     "_token": "{{ csrf_token() }}",
                                 },
                                 success: function (response) {
-                                    alert("success");
+                                    table.clear().draw();
+                                    $('#responseMessage').addClass("alert-success");
+                                    $('#responseMessage').text(response);
+                                    $('#messageModal').modal('show');
                                 },
                                 error: function (response) {
-                                    alert("error");
+                                    $('#responseMessage').addClass("alert-danger");
+                                    $('#responseMessage').text("Something went wrong");
+                                    $('#messageModal').modal('show');
                                 }
                             });
                         })
