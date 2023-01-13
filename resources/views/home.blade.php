@@ -13,8 +13,6 @@
             url: "{{ route('home.blogs') }}",
             method: "GET",
             success: function (data) {
-                alert('success');
-                console.log(data);
                 $('#blogsDev').html(data);
             },
             error: function (response) {

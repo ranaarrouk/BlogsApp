@@ -31,7 +31,20 @@ class BlogController extends Controller
                     $btn .= '<a href="' . route('blogs.edit', $blog->id) . '"  class="btn-secondary m-1  btn btn-sm edit-blog">Edit</a>';
                     $btn .= '<a href="javascript:void(0)" data-url="' . $route . '" class="btn-danger btn btn-sm delete-blog">Delete</a>';
                     return $btn;
-                })
+                })->filter(function ($instance) use ($request) {
+                    if ($request->get('status'))
+                        $instance->where('status', $request->get('status'));
+
+                    if ($request->get('publish_date'))
+                        $instance->where('publish_date', $request->get('publish_date'));
+
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function($w) use($request){
+                            $search = $request->get('search');
+                            $w->orWhere('title', 'LIKE', "%$search%")
+                                ->orWhere('content', 'LIKE', "%$search%");
+                        });
+                    }})
                 ->rawColumns(['image', 'action'])
                 ->make(true);
         }
@@ -98,7 +111,7 @@ class BlogController extends Controller
                 $imageName = $file->hashName();
 
             }
-            
+
             Blog::find($blog)->update([
                 'title' => $request["title"],
                 'content' => $request["content"],
