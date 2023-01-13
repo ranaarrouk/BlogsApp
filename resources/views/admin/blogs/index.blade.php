@@ -10,6 +10,8 @@
         </div>
     </div>
     @include('admin.message_modal')
+@endsection
+@push('jsscripts')
     <script>
         $(document).ready(function () {
             $(function () {
@@ -55,4 +57,4 @@
 
         });
     </script>
-@endsection
+@endpush

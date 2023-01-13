@@ -9,6 +9,8 @@
             </div>
         </div>
     </div>
+@endsection
+@push('jsscripts')
     <script>
         $(document).ready( function () {
             $(function () {
@@ -27,4 +29,4 @@
             });
         } );
     </script>
-@endsection
+@endpush
