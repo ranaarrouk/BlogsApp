@@ -19,7 +19,7 @@ class UpdateSubscriber extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required",
+            "name" => "required|string|min:3|max:255",
             "password" => "nullable|min:8",
             "status" => "required",
         ];

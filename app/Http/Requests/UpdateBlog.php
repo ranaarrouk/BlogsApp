@@ -24,7 +24,7 @@ class UpdateBlog extends FormRequest
     public function rules()
     {
         return [
-            "title" => "required",
+            "title" => "required|string|min:5|max:255",
             "content" => "required",
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             "status" => "required",
