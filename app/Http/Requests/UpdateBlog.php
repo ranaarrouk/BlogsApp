@@ -24,7 +24,11 @@ class UpdateBlog extends FormRequest
     public function rules()
     {
         return [
-            //
+            "title" => "required",
+            "content" => "required",
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            "status" => "required",
+            "publish_date" => "required",
         ];
     }
 }

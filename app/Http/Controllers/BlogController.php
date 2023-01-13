@@ -27,8 +27,8 @@ class BlogController extends Controller
                     return '<img src="' . $url . '" border="0" width="40" class="img-rounded" align="center" />';
                 })->addColumn('action', function ($blog) {
                     $route = url('blogs/' . $blog->id);
-                    $btn = '<a href="'. route('blogs.show', $blog->id) .'" class="m-1 btn btn-primary btn-sm">View</a>';
-                    $btn .= '<a href="javascript:void(0)" data-url="' . $route . '" class="btn-secondary btn btn-sm edit-blog">Edit</a>';
+                    $btn = '<a href="' . route('blogs.show', $blog->id) . '" class="m-1 btn btn-primary btn-sm">View</a>';
+                    $btn .= '<a href="' . route('blogs.edit', $blog->id) . '"  class="btn-secondary m-1  btn btn-sm edit-blog">Edit</a>';
                     $btn .= '<a href="javascript:void(0)" data-url="' . $route . '" class="btn-danger btn btn-sm delete-blog">Delete</a>';
                     return $btn;
                 })
@@ -91,12 +91,18 @@ class BlogController extends Controller
         }
         try {
 
-            $image = "";
+            $imageName = "";
+            if ($request->hasFile('image')) {
+                $file = $request->image;
+                $file->store('public\blogs\images');
+                $imageName = $file->hashName();
 
+            }
+            
             Blog::find($blog)->update([
                 'title' => $request["title"],
                 'content' => $request["content"],
-                'image' => $image,
+                'image' => $imageName,
                 'status' => $request["status"],
                 'publish_date' => $request["publish_date"],
             ]);
