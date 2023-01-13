@@ -23,12 +23,25 @@ class SubscriberController extends Controller
     {
 
         if ($request->ajax()) {
-            $subscribers = User::query()->where('type', 'subscriber')->select(['name', 'username', 'password', 'status']);
+            $subscribers = User::query()->where('type', 'subscriber')->select(['id', 'name', 'username', 'password', 'status']);
             return DataTables::of($subscribers)->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" class="btn btn-primary btn-sm">View</a>';
+                    $route = url('subscribers/' . $row->id);
+                    $btn = '<a href="' . route('subscribers.show', $row->id) . '" class="m-1 btn btn-primary btn-sm">View</a>';
+                    $btn .= '<a href="' . route('subscribers.edit', $row->id) . '"  class="btn-secondary m-1  btn btn-sm edit-subscriber">Edit</a>';
+                    $btn .= '<a href="javascript:void(0)" data-url="' . $route . '" class="btn-danger btn btn-sm delete-subscriber">Delete</a>';
                     return $btn;
-                })
+                })->filter(function ($instance) use ($request) {
+                    if ($request->get('status'))
+                        $instance->where('status', $request->get('status'));
+
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function($w) use($request){
+                            $search = $request->get('search');
+                            $w->orWhere('name', 'LIKE', "%$search%")
+                                ->orWhere('username', 'LIKE', "%$search%");
+                        });
+                    }})
                 ->rawColumns(['action'])
                 ->make(true);
         }
