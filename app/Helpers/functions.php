@@ -7,5 +7,5 @@ function getBlogStatus()
 
 function getSubscriberStatus()
 {
-    return ["Pending", "Active"];
+    return ["pending", "active"];
 }
