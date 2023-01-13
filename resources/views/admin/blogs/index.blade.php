@@ -99,6 +99,7 @@
 
                 $('#searchBtn').on('click', function () {
                     table.clear().draw();
+                    $('#searchModal').modal('hide');
                 });
 
             });
