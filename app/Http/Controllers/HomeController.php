@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 
@@ -17,14 +18,14 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        $blogs = Blog::query()->where("status", "published")->get();
-        return view('home', compact('blogs'));
+        return view('home');
+    }
+
+    public function getBlogs()
+    {
+        $blogs = BlogResource::collection(Blog::query()->where("status", "published")->get());
+        return view('home_blogs')->with('blogs',$blogs);
     }
 }
