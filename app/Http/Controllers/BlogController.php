@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\StoreBlogAction;
 use App\Http\Requests\StoreBlog;
 use App\Http\Requests\UpdateBlog;
 use App\Models\Blog;
@@ -57,25 +58,10 @@ class BlogController extends Controller
         return view('admin.blogs.create');
     }
 
-    public function store(StoreBlog $request)
+    public function store(StoreBlog $request, StoreBlogAction $storeBlogAction)
     {
         try {
-            $imageName = "";
-            if ($request->hasFile('image')) {
-                $file = $request->image;
-                $file->store('public\blogs\images');
-                $imageName = $file->hashName();
-            }
-
-            $blog = Blog::create([
-                'title' => $request["title"],
-                'content' => $request["content"],
-                'image' => $imageName,
-                'status' => $request["status"],
-                'publish_date' => $request["publish_date"],
-            ]);
-            $blog->refresh();
-
+            $storeBlogAction->execute($request);
             return response()->json("Blog added successfully", 200);
 
         } catch (\Exception $exception) {
