@@ -8,17 +8,18 @@ use App\DataTransferObjects\StoreBlogDTO;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 
-class StoreBlogAction
+class UpdateBlogAction
 {
-    public function execute(StoreBlogDTO $storeBlogDTO): void
+    public function execute(StoreBlogDTO $storeBlogDTO, $blog)
     {
-        $blog = Blog::create([
+        $blog = Blog::find($blog);
+        $blog->update([
             'title' => $storeBlogDTO->title,
             'content' => $storeBlogDTO->content,
-            'image' => $storeBlogDTO->image,
+            'image' => empty($storeBlogDTO->image)? $blog->image : $storeBlogDTO->image,
             'status' => $storeBlogDTO->status,
             'publish_date' => $storeBlogDTO->publishDate,
         ]);
-        $blog->refresh();
+
     }
 }

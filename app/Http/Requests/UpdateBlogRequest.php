@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\DataTransferObjects\StoreBlogDTO;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateBlogRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateBlogRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::user()->isAdmin();
     }
 
     /**
@@ -30,5 +32,16 @@ class UpdateBlogRequest extends FormRequest
             "status" => "required",
             "publish_date" => "required",
         ];
+    }
+
+    public function toDto(): StoreBlogDTO
+    {
+        $imageName = "";
+        if (request()->hasFile('image')) {
+            $file = request()->file('image');
+            $file->store('public\blogs\images');
+            $imageName = $file->hashName();
+        }
+        return new StoreBlogDTO($this->title, $this->input("content"), $imageName, $this->status, $this->publish_date);
     }
 }

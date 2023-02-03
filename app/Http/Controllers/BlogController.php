@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\StoreBlogAction;
+use App\Actions\UpdateBlogAction;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
@@ -75,31 +76,10 @@ class BlogController extends Controller
         return view('admin.blogs.edit', compact('blog'));
     }
 
-    public function update(Request $request, $blog)
+    public function update(UpdateBlogRequest $updateBlogRequest, UpdateBlogAction $updateBlogAction, $blog)
     {
-        $updateRequest = new UpdateBlogRequest();
-        $validator = Validator::make($request->all(), $updateRequest->rules(), $updateRequest->messages());
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
         try {
-
-            $imageName = "";
-            if ($request->hasFile('image')) {
-                $file = $request->image;
-                $file->store('public\blogs\images');
-                $imageName = $file->hashName();
-
-            }
-
-            Blog::find($blog)->update([
-                'title' => $request["title"],
-                'content' => $request["content"],
-                'image' => $imageName,
-                'status' => $request["status"],
-                'publish_date' => $request["publish_date"],
-            ]);
-
+            $updateBlogAction->execute($updateBlogRequest->toDto(), $blog);
             return response()->json("Blog updated successfully", 200);
 
         } catch (\Exception $exception) {

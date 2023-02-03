@@ -10,7 +10,7 @@ class StoreBlogDTO extends DataTransferObject
 {
     public string $title;
 
-    public string $content;
+    public $content;
 
     public $image;
 
@@ -21,12 +21,12 @@ class StoreBlogDTO extends DataTransferObject
     /**
      * StoreBlogDTO constructor.
      * @param string $title
-     * @param string $content
+     * @param $content
      * @param $image
      * @param string $status
      * @param string $publishDate
      */
-    public function __construct(string $title, string $content, $image, string $status, string $publishDate)
+    public function __construct(string $title, $content, $image, string $status, string $publishDate)
     {
         $this->title = $title;
         $this->content = $content;

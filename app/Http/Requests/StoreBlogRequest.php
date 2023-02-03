@@ -38,6 +38,12 @@ class StoreBlogRequest extends FormRequest
 
     public function toDto(): StoreBlogDTO
     {
-        return new StoreBlogDTO($this->title, $this->content, $this->image, $this->status, $this->publish_date);
+        $imageName = "";
+        if (request()->hasFile('image')) {
+            $file = request()->file('image');
+            $file->store('public\blogs\images');
+            $imageName = $file->hashName();
+        }
+        return new StoreBlogDTO($this->title, $this->input("content"), $imageName, $this->status, $this->publish_date);
     }
 }
