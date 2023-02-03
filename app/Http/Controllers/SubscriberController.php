@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Requests\StoreSubscriber;
-use App\Http\Requests\UpdateSubscriber;
+use App\Http\Requests\StoreSubscriberRequest;
+use App\Http\Requests\UpdateSubscriberRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +56,7 @@ class SubscriberController extends Controller
 
     public function store(Request $request)
     {
-        $storeRequest = new StoreSubscriber();
+        $storeRequest = new StoreSubscriberRequest();
         $validator = Validator::make($request->all(), $storeRequest->rules(), $storeRequest->messages());
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -86,7 +86,7 @@ class SubscriberController extends Controller
 
     public function update(Request $request, $subscriber)
     {
-        $updateRequest = new UpdateSubscriber();
+        $updateRequest = new UpdateSubscriberRequest();
         $validator = Validator::make($request->all(), $updateRequest->rules(), $updateRequest->messages());
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

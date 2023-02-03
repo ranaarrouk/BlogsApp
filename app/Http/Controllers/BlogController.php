@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\StoreBlogAction;
-use App\Http\Requests\StoreBlog;
-use App\Http\Requests\UpdateBlog;
+use App\Http\Requests\StoreBlogRequest;
+use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -58,7 +58,7 @@ class BlogController extends Controller
         return view('admin.blogs.create');
     }
 
-    public function store(StoreBlog $request, StoreBlogAction $storeBlogAction)
+    public function store(StoreBlogRequest $request, StoreBlogAction $storeBlogAction)
     {
         try {
             $storeBlogAction->execute($request->toDto());
@@ -77,7 +77,7 @@ class BlogController extends Controller
 
     public function update(Request $request, $blog)
     {
-        $updateRequest = new UpdateBlog();
+        $updateRequest = new UpdateBlogRequest();
         $validator = Validator::make($request->all(), $updateRequest->rules(), $updateRequest->messages());
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
