@@ -57,15 +57,9 @@ class BlogController extends Controller
         return view('admin.blogs.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreBlog $request)
     {
-        $storeRequest = new StoreBlog();
-        $validator = Validator::make($request->all(), $storeRequest->rules(), $storeRequest->messages());
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
         try {
-
             $imageName = "";
             if ($request->hasFile('image')) {
                 $file = $request->image;

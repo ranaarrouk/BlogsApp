@@ -81,11 +81,11 @@
                     },
                     error: function (response) {
                         console.log(response);
-                        $('#titleErrorMsg').text(response.responseJSON.title);
-                        $('#contentErrorMsg').text(response.responseJSON.content);
-                        $('#imageErrorMsg').text(response.responseJSON.image);
-                        $('#statusErrorMsg').text(response.responseJSON.status);
-                        $('#publishDateErrorMsg').text(response.responseJSON.publish_date);
+                        $('#titleErrorMsg').text(response.responseJSON.errors.title);
+                        $('#contentErrorMsg').text(response.responseJSON.errors.content);
+                        $('#imageErrorMsg').text(response.responseJSON.errors.image);
+                        $('#statusErrorMsg').text(response.responseJSON.errors.status);
+                        $('#publishDateErrorMsg').text(response.responseJSON.errors.publish_date);
                     },
                 });
             });
