@@ -4,26 +4,27 @@
 namespace App\Actions;
 
 
+use App\DataTransferObjects\StoreBlogDTO;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 
 class StoreBlogAction
 {
-    public function execute(Request $request): void
+    public function execute(StoreBlogDTO $storeBlogDTO): void
     {
         $imageName = "";
-        if ($request->hasFile('image')) {
-            $file = $request->image;
+        if (request()->hasFile('image')) {
+            $file = $storeBlogDTO->image;
             $file->store('public\blogs\images');
             $imageName = $file->hashName();
         }
 
         $blog = Blog::create([
-            'title' => $request["title"],
-            'content' => $request["content"],
+            'title' => $storeBlogDTO->title,
+            'content' => $storeBlogDTO->content,
             'image' => $imageName,
-            'status' => $request["status"],
-            'publish_date' => $request["publish_date"],
+            'status' => $storeBlogDTO->status,
+            'publish_date' => $storeBlogDTO->publishDate,
         ]);
         $blog->refresh();
     }

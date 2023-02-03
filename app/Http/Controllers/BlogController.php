@@ -61,7 +61,7 @@ class BlogController extends Controller
     public function store(StoreBlog $request, StoreBlogAction $storeBlogAction)
     {
         try {
-            $storeBlogAction->execute($request);
+            $storeBlogAction->execute($request->toDto());
             return response()->json("Blog added successfully", 200);
 
         } catch (\Exception $exception) {

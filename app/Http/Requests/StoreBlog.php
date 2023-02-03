@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\DataTransferObjects\StoreBlogDTO;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class StoreBlog extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return Auth::user()->isAdmin();
     }
@@ -24,7 +25,7 @@ class StoreBlog extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             "title" => "required|string|min:5|max:255",
@@ -33,5 +34,10 @@ class StoreBlog extends FormRequest
             "status" => "required",
             "publish_date" => "required|date",
         ];
+    }
+
+    public function toDto(): StoreBlogDTO
+    {
+        return new StoreBlogDTO($this->title, $this->content, $this->image, $this->status, $this->publish_date);
     }
 }
