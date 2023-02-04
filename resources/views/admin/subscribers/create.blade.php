@@ -76,10 +76,10 @@
                     },
                     error: function (response) {
                         console.log(response);
-                        $('#nameErrorMsg').text(response.responseJSON.name);
-                        $('#usernameErrorMsg').text(response.responseJSON.username);
-                        $('#passwordErrorMsg').text(response.responseJSON.password);
-                        $('#statusErrorMsg').text(response.responseJSON.status);
+                        $('#nameErrorMsg').text(response.responseJSON.errors.name);
+                        $('#usernameErrorMsg').text(response.responseJSON.errors.username);
+                        $('#passwordErrorMsg').text(response.responseJSON.errors.password);
+                        $('#statusErrorMsg').text(response.responseJSON.errors.status);
                     },
                 });
             });

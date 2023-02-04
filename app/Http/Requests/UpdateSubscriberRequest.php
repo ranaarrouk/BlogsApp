@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\DataTransferObjects\StoreSubscriberDTO;
+use App\DataTransferObjects\UpdateSubscriberDTO;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateSubscriberRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class UpdateSubscriberRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::user()->isAdmin();
     }
 
     public function rules()
@@ -23,5 +26,10 @@ class UpdateSubscriberRequest extends FormRequest
             "password" => "nullable|min:8",
             "status" => "required",
         ];
+    }
+
+    public function toDTO(): UpdateSubscriberDTO
+    {
+        return new UpdateSubscriberDTO($this->name, ($this->password? $this->password : ''), $this->status);
     }
 }

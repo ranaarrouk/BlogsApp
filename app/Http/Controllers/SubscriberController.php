@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Actions\StoreSubscriberAction;
+use App\Actions\UpdateSubscriberAction;
 use App\Http\Requests\StoreSubscriberRequest;
 use App\Http\Requests\UpdateSubscriberRequest;
 use App\Models\User;
@@ -54,23 +56,10 @@ class SubscriberController extends Controller
         return view('admin.subscribers.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreSubscriberRequest $storeSubscriberRequest, StoreSubscriberAction $storeSubscriberAction)
     {
-        $storeRequest = new StoreSubscriberRequest();
-        $validator = Validator::make($request->all(), $storeRequest->rules(), $storeRequest->messages());
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
         try {
-            $user = User::create([
-                'name' => $request["name"],
-                'username' => $request["username"],
-                'password' => Hash::make($request["password"]),
-                'status' => $request["status"],
-                'type' => 'subscriber',
-            ]);
-            $user->refresh();
-
+            $storeSubscriberAction->execute($storeSubscriberRequest->toDTO());
             return response()->json("Subscriber added successfully", 200);
 
         } catch (\Exception $exception) {
@@ -84,25 +73,10 @@ class SubscriberController extends Controller
         return view('admin.subscribers.edit', compact('subscriber'));
     }
 
-    public function update(Request $request, $subscriber)
+    public function update(UpdateSubscriberRequest $updateSubscriberRequest, UpdateSubscriberAction $updateSubscriberAction, $subscriber)
     {
-        $updateRequest = new UpdateSubscriberRequest();
-        $validator = Validator::make($request->all(), $updateRequest->rules(), $updateRequest->messages());
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
         try {
-
-            $subscriber = User::find($subscriber);
-
-            $subscriber->update([
-                'name' => $request["name"],
-                'status' => $request["status"],
-            ]);
-
-            if (!empty($request["password"]))
-                $subscriber->update(["password" => Hash::make($request["password"])]);
-
+            $updateSubscriberAction->execute($updateSubscriberRequest->toDTO(), $subscriber);
             return response()->json("Subscriber updated successfully", 200);
 
         } catch (\Exception $exception) {

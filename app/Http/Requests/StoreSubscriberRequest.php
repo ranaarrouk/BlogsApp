@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\DataTransferObjects\StoreSubscriberDTO;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreSubscriberRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class StoreSubscriberRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::user()->isAdmin();
     }
 
     /**
@@ -29,5 +31,10 @@ class StoreSubscriberRequest extends FormRequest
             "password" => "required|min:8",
             "status" => "required",
         ];
+    }
+
+    public function toDTO(): StoreSubscriberDTO
+    {
+        return new StoreSubscriberDTO($this->name, $this->username, $this->password, $this->status, 'subscriber');
     }
 }
